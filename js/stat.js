@@ -1,27 +1,71 @@
 'use strict';
 
 window.renderStatistics = function (ctx, names, times) {
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-  ctx.fillRect(110, 20, 420, 270);
-  ctx.fillStyle = 'white';
-  ctx.fillRect(100, 10, 420, 270);
 
-  ctx.fillStyle = 'black';
-  ctx.font = '16px PT Mono';
-  ctx.fillText('Ура вы победили!', 120, 40);
+  var drawBlock = function (x, y, width, height) {
+    var drawTop = function () {
+      var x1 = x;
+      var x2 = x + 60;
+      for (var i = 0; i < 7; i++) {
+        ctx.bezierCurveTo(x1, 0, x2, 0, x2, y);
+        x1 = x2;
+        x2 += 60;
+      }
+    };
 
-  var maxTime = -1;
-  var indexMaxTime = -1;
+    var drawRight = function () {
+      var y1 = y;
+      var y2 = y + 30;
+      for (var i = 0; i < 9; i++) {
+        ctx.bezierCurveTo(x + width + 10, y1, x + width + 10, y2, x + width, y2);
+        y1 = y2;
+        y2 += 30;
+      }
+    };
 
-  for (var i = 0; i < times.length; i++) {
-    if (times[i] > maxTime) {
-      maxTime = times[i];
-      indexMaxTime = i;
+    var drawBottom = function () {
+    // ctx.bezierCurveTo(520, 290, 460, 290, 460, 280);
+      var x1 = x + width;
+      var x2 = x1 - 60;
+      for (var i = 0; i < 7; i++) {
+        ctx.bezierCurveTo(x1, y + height + 10, x2, y + height + 10, x2, y + height);
+        x1 = x2;
+        x2 -= 60;
+      }
+    };
+
+    var drawLeft = function () {
+      var y1 = y + height;
+      var y2 = y1 - 30;
+      for (var i = 0; i < 9; i++) {
+        ctx.bezierCurveTo(x - 10, y1, x - 10, y2, x, y2);
+        y1 = y2;
+        y2 -= 30;
+      }
+    };
+
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    drawTop();
+    drawRight();
+    drawBottom();
+    drawLeft();
+    ctx.closePath();
+    ctx.stroke();
+    ctx.fill();
+  };
+
+  var findMaxItem = function (array) {
+    var max = -1;
+    for (var i = 0; i < array.length; i++) {
+      if (array[i] > max) {
+        max = array[i];
+      }
     }
-  }
+    return max;
+  };
 
-  ctx.fillText('Худшее время: ' + Math.floor(maxTime) + 'мс у игрока ' + names[indexMaxTime], 120, 60);
-  // ctx.fillRect(120, 80, 40, 150);
+  var maxTime = findMaxItem(times);
 
   var histogramHeight = 150;
   var step = histogramHeight / (maxTime - 0);
@@ -32,11 +76,28 @@ window.renderStatistics = function (ctx, names, times) {
   var initialX = 120;
   var initialY = 100;
 
-  for (i = 0; i < times.length; i++) {
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+  drawBlock(110, 20, 420, 270);
+  ctx.strokeStyle = 'black';
+  ctx.fillStyle = 'white';
+  drawBlock(100, 10, 420, 270);
+
+  ctx.fillStyle = 'black';
+  ctx.font = '16px PT Mono';
+  ctx.fillText('Ура вы победили!', 120, 40);
+  ctx.fillText('Список результатов: ', 120, 60);
+
+  for (var i = 0; i < times.length; i++) {
     if (names[i] === 'Вы') {
       ctx.fillStyle = 'rgba(255, 0, 0, 1)';
     } else {
-      ctx.fillStyle = 'black';
+      var opacity = 0;
+      while (opacity === 0) {
+        opacity = Math.floor(Math.random() * 10);
+      }
+      opacity /= 10;
+      var color = 'rgba(30, 0, 255, ' + opacity + ')';
+      ctx.fillStyle = color;
     }
     ctx.fillRect(initialX + ((barWidth + indent) * i), initialY, barWidth, histogramHeight);
     ctx.fillStyle = 'white';

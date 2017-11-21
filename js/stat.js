@@ -76,11 +76,16 @@ window.renderStatistics = function (ctx, names, times) {
   var initialX = 120;
   var initialY = 100;
 
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-  drawBlock(110, 20, 420, 270);
+  ctx.shadowOffsetX = 10;
+  ctx.shadowOffsetY = 10;
+  ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
   ctx.strokeStyle = 'black';
   ctx.fillStyle = 'white';
   drawBlock(100, 10, 420, 270);
+
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = 0;
+  ctx.shadowColor = 'transparent';
 
   ctx.fillStyle = 'black';
   ctx.font = '16px PT Mono';

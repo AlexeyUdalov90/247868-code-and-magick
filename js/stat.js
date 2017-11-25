@@ -2,7 +2,7 @@
 
 window.renderStatistics = function (ctx, names, times) {
 
-  var drawBlock = function (x, y, width, height) {
+  var drawBackground = function (x, y, width, height) {
     var drawTop = function () {
       var x1 = x;
       var x2 = x + 60;
@@ -81,7 +81,7 @@ window.renderStatistics = function (ctx, names, times) {
   ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
   ctx.strokeStyle = 'black';
   ctx.fillStyle = 'white';
-  drawBlock(100, 10, 420, 270);
+  drawBackground(100, 10, 420, 270);
 
   ctx.shadowOffsetX = 0;
   ctx.shadowOffsetY = 0;

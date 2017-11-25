@@ -58,15 +58,21 @@ window.renderStatistics = function (ctx, names, times) {
   var maxTime = times.reduce(function (max, element) {
     return max < element ? element : max;
   });
-
   var histogramHeight = 150;
   var step = histogramHeight / (maxTime - 0);
-
   var barWidth = 40;
   var indent = 50;
   var lineHeight = 18;
   var initialX = 120;
   var initialY = 100;
+  var texts = ['Ура вы победили!', 'Список результатов:'];
+
+  var writeText = function (arr, x, y) {
+    for (var i = 0; i < arr.length; i++) {
+      ctx.fillText(arr[i], x, y);
+      y += 20;
+    }
+  };
 
   ctx.shadowOffsetX = 10;
   ctx.shadowOffsetY = 10;
@@ -81,8 +87,7 @@ window.renderStatistics = function (ctx, names, times) {
 
   ctx.fillStyle = 'black';
   ctx.font = '16px PT Mono';
-  ctx.fillText('Ура вы победили!', 120, 40);
-  ctx.fillText('Список результатов: ', 120, 60);
+  writeText(texts, 120, 40);
 
   for (var i = 0; i < times.length; i++) {
     if (names[i] === 'Вы') {

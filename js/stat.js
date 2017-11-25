@@ -55,17 +55,9 @@ window.renderStatistics = function (ctx, names, times) {
     ctx.fill();
   };
 
-  var findMaxItem = function (array) {
-    var max = -1;
-    for (var i = 0; i < array.length; i++) {
-      if (array[i] > max) {
-        max = array[i];
-      }
-    }
-    return max;
-  };
-
-  var maxTime = findMaxItem(times);
+  var maxTime = times.reduce(function (max, element) {
+    return max < element ? element : max;
+  });
 
   var histogramHeight = 150;
   var step = histogramHeight / (maxTime - 0);

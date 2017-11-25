@@ -89,18 +89,21 @@ window.renderStatistics = function (ctx, names, times) {
   ctx.font = '16px PT Mono';
   writeText(texts, 120, 40);
 
-  for (var i = 0; i < times.length; i++) {
-    if (names[i] === 'Вы') {
-      ctx.fillStyle = 'rgba(255, 0, 0, 1)';
-    } else {
+  var getRectColor = function (name) {
+    var rgba = 'rgba(255, 0, 0, 1)';
+    if (name !== 'Вы') {
       var opacity = 0;
       while (opacity === 0) {
         opacity = Math.floor(Math.random() * 10);
       }
-      opacity /= 10;
-      var color = 'rgba(30, 0, 255, ' + opacity + ')';
-      ctx.fillStyle = color;
+      rgba = 'rgba(0, 0, 255, ' + opacity / 10 + ')';
     }
+    return rgba;
+  };
+
+  for (var i = 0; i < times.length; i++) {
+    ctx.fillStyle = getRectColor(names[i]);
+
     ctx.fillRect(initialX + ((barWidth + indent) * i), initialY, barWidth, histogramHeight);
     ctx.fillStyle = 'white';
     ctx.fillRect(initialX + ((barWidth + indent) * i), initialY, barWidth, (maxTime - times[i]) * step);

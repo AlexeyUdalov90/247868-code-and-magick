@@ -74,6 +74,22 @@ window.renderStatistics = function (ctx, names, times) {
     }
   };
 
+  var getRectColor = function (name) {
+    var rgba = 'rgba(255, 0, 0, 1)';
+    if (name !== 'Вы') {
+      var opacity = 0;
+      while (opacity === 0) {
+        opacity = Math.floor(Math.random() * 10);
+      }
+      rgba = 'rgba(0, 0, 255, ' + opacity / 10 + ')';
+    }
+    return rgba;
+  };
+
+  var drawColumn = function (x, y, width, height) {
+    ctx.fillRect(x, y, width, height);
+  };
+
   ctx.shadowOffsetX = 10;
   ctx.shadowOffsetY = 10;
   ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
@@ -89,26 +105,15 @@ window.renderStatistics = function (ctx, names, times) {
   ctx.font = '16px PT Mono';
   writeText(texts, 120, 40);
 
-  var getRectColor = function (name) {
-    var rgba = 'rgba(255, 0, 0, 1)';
-    if (name !== 'Вы') {
-      var opacity = 0;
-      while (opacity === 0) {
-        opacity = Math.floor(Math.random() * 10);
-      }
-      rgba = 'rgba(0, 0, 255, ' + opacity / 10 + ')';
-    }
-    return rgba;
-  };
-
   for (var i = 0; i < times.length; i++) {
-    ctx.fillStyle = getRectColor(names[i]);
+    var x = initialX + (barWidth + indent) * i;
+    var y = initialY + (maxTime - times[i]) * step;
+    var height = times[i] * step;
 
-    ctx.fillRect(initialX + ((barWidth + indent) * i), initialY, barWidth, histogramHeight);
-    ctx.fillStyle = 'white';
-    ctx.fillRect(initialX + ((barWidth + indent) * i), initialY, barWidth, (maxTime - times[i]) * step);
+    ctx.fillStyle = getRectColor(names[i]);
+    drawColumn(x, y, barWidth, height);
     ctx.fillStyle = 'black';
-    ctx.fillText(Math.floor(times[i]), initialX + ((barWidth + indent) * i), initialY - lineHeight + (maxTime - times[i]) * step);
-    ctx.fillText(names[i], initialX + ((barWidth + indent) * i), initialY + histogramHeight + lineHeight);
+    ctx.fillText(Math.floor(times[i]), x, y - lineHeight / 2);
+    ctx.fillText(names[i], x, y + height + lineHeight);
   }
 };

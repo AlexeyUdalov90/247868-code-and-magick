@@ -3,53 +3,41 @@
 window.renderStatistics = function (ctx, names, times) {
 
   var drawBackground = function (x, y, width, height) {
-    var drawTop = function () {
-      var x1 = x;
-      var x2 = x + 60;
-      for (var i = 0; i < 7; i++) {
-        ctx.bezierCurveTo(x1, 0, x2, 0, x2, y);
-        x1 = x2;
-        x2 += 60;
-      }
-    };
-
-    var drawRight = function () {
-      var y1 = y;
-      var y2 = y + 30;
-      for (var i = 0; i < 9; i++) {
-        ctx.bezierCurveTo(x + width + 10, y1, x + width + 10, y2, x + width, y2);
-        y1 = y2;
-        y2 += 30;
-      }
-    };
-
-    var drawBottom = function () {
-    // ctx.bezierCurveTo(520, 290, 460, 290, 460, 280);
-      var x1 = x + width;
-      var x2 = x1 - 60;
-      for (var i = 0; i < 7; i++) {
-        ctx.bezierCurveTo(x1, y + height + 10, x2, y + height + 10, x2, y + height);
-        x1 = x2;
-        x2 -= 60;
-      }
-    };
-
-    var drawLeft = function () {
-      var y1 = y + height;
-      var y2 = y1 - 30;
-      for (var i = 0; i < 9; i++) {
-        ctx.bezierCurveTo(x - 10, y1, x - 10, y2, x, y2);
-        y1 = y2;
-        y2 -= 30;
-      }
-    };
-
     ctx.beginPath();
     ctx.moveTo(x, y);
-    drawTop();
-    drawRight();
-    drawBottom();
-    drawLeft();
+
+    var stepHorizontal = width / 7;
+    var stepVertical = height / 9;
+    var x1 = x;
+    var x2 = x;
+    for (var i = 0; i < 7; i++) {
+      x2 += stepHorizontal;
+      ctx.bezierCurveTo(x1, 0, x2, 0, x2, y);
+      x1 = x2;
+    }
+
+    var y1 = y;
+    var y2 = y;
+    for (i = 0; i < 9; i++) {
+      y2 += stepVertical;
+      ctx.bezierCurveTo(x2 + 10, y1, x2 + 10, y2, x2, y2);
+      y1 = y2;
+    }
+
+    x1 = x2;
+    for (i = 0; i < 7; i++) {
+      x2 -= stepHorizontal;
+      ctx.bezierCurveTo(x1, y2 + 10, x2, y2 + 10, x2, y2);
+      x1 = x2;
+    }
+
+    y1 = y2;
+    for (i = 0; i < 9; i++) {
+      y2 -= stepVertical;
+      ctx.bezierCurveTo(x2 - 10, y1, x2 - 10, y2, x2, y2);
+      y1 = y2;
+    }
+
     ctx.closePath();
     ctx.stroke();
     ctx.fill();

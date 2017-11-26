@@ -75,7 +75,11 @@ window.renderStatistics = function (ctx, names, times) {
   };
 
   var drawColumn = function (x, y, width, height) {
+    ctx.fillStyle = getRectColor(names[i]);
     ctx.fillRect(x, y, width, height);
+    ctx.fillStyle = 'black';
+    ctx.fillText(Math.floor(times[i]), x, y - lineHeight / 2);
+    ctx.fillText(names[i], x, y + height + lineHeight);
   };
 
   ctx.shadowOffsetX = 10;
@@ -97,11 +101,6 @@ window.renderStatistics = function (ctx, names, times) {
     var x = initialX + (barWidth + indent) * i;
     var y = initialY + (maxTime - times[i]) * step;
     var height = times[i] * step;
-
-    ctx.fillStyle = getRectColor(names[i]);
     drawColumn(x, y, barWidth, height);
-    ctx.fillStyle = 'black';
-    ctx.fillText(Math.floor(times[i]), x, y - lineHeight / 2);
-    ctx.fillText(names[i], x, y + height + lineHeight);
   }
 };

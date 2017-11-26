@@ -53,33 +53,30 @@ window.renderStatistics = function (ctx, names, times) {
   var lineHeight = 18;
   var initialX = 120;
   var initialY = 100;
-  var texts = ['Ура вы победили!', 'Список результатов:'];
+  // var texts = ['Ура вы победили!', 'Список результатов:'];
 
-  var writeText = function (arr, x, y) {
+  var writeText = function (x, y, arr) {
     for (var i = 0; i < arr.length; i++) {
       ctx.fillText(arr[i], x, y);
       y += 20;
     }
   };
 
-  var getRectColor = function (name) {
-    var rgba = 'rgba(255, 0, 0, 1)';
-    if (name !== 'Вы') {
-      var opacity = 0;
-      while (opacity === 0) {
-        opacity = Math.floor(Math.random() * 10);
-      }
-      rgba = 'rgba(0, 0, 255, ' + opacity / 10 + ')';
-    }
-    return rgba;
+  var getColor = function () {
+    var opacity = Math.random() * (1 - 0.1) + 0.1;
+    return 'rgba(0, 0, 255, ' + opacity.toFixed(1) + ')';
   };
 
-  var drawColumn = function (x, y, width, height) {
-    ctx.fillStyle = getRectColor(names[i]);
+  var getRectColor = function (name) {
+    return (name === 'Вы') ? 'rgba(255, 0, 0, 1)' : getColor();
+  };
+
+  var drawColumn = function (x, y, width, height, name, time) {
+    ctx.fillStyle = getRectColor(name);
     ctx.fillRect(x, y, width, height);
     ctx.fillStyle = 'black';
-    ctx.fillText(Math.floor(times[i]), x, y - lineHeight / 2);
-    ctx.fillText(names[i], x, y + height + lineHeight);
+    ctx.fillText(Math.floor(time), x, y - lineHeight / 2);
+    ctx.fillText(name, x, y + height + lineHeight);
   };
 
   ctx.shadowOffsetX = 10;
@@ -95,12 +92,12 @@ window.renderStatistics = function (ctx, names, times) {
 
   ctx.fillStyle = 'black';
   ctx.font = '16px PT Mono';
-  writeText(texts, 120, 40);
+  writeText(120, 40, ['Ура вы победили!', 'Список результатов:']);
 
   for (var i = 0; i < times.length; i++) {
     var x = initialX + (barWidth + indent) * i;
     var y = initialY + (maxTime - times[i]) * step;
     var height = times[i] * step;
-    drawColumn(x, y, barWidth, height);
+    drawColumn(x, y, barWidth, height, names[i], times[i]);
   }
 };

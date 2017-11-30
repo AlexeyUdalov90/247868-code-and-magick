@@ -1,8 +1,12 @@
 'use strict';
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
 var setupBlock = document.querySelector('.setup');
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 var similarListElement = document.querySelector('.setup-similar-list');
 var fragment = document.createDocumentFragment();
+var setupOpen = document.querySelector('.setup-open');
+var setupClose = setupBlock.querySelector('.setup-close');
 
 var getRandomItem = function (array) {
   return array[Math.floor(Math.random() * array.length)];
@@ -33,8 +37,6 @@ var renderWizard = function (wizard) {
   return wizardElement;
 };
 
-setupBlock.classList.remove('hidden');
-
 createWizads(4).forEach(function (wizard) {
   fragment.appendChild(renderWizard(wizard));
 });
@@ -42,3 +44,39 @@ createWizads(4).forEach(function (wizard) {
 similarListElement.appendChild(fragment);
 
 setupBlock.querySelector('.setup-similar').classList.remove('hidden');
+
+var onPopupEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closePopup();
+  }
+};
+
+var openPopup = function () {
+  setupBlock.classList.remove('hidden');
+  document.addEventListener('keydown', onPopupEscPress);
+};
+
+var closePopup = function () {
+  setupBlock.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscPress);
+};
+
+setupOpen.addEventListener('click', function () {
+  openPopup();
+});
+
+setupOpen.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    openPopup();
+  }
+});
+
+setupClose.addEventListener('click', function () {
+  closePopup();
+});
+
+setupClose.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closePopup();
+  }
+});

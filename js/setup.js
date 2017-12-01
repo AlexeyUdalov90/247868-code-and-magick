@@ -10,6 +10,9 @@ var similarListElement = document.querySelector('.setup-similar-list');
 var fragment = document.createDocumentFragment();
 var setupOpen = document.querySelector('.setup-open');
 var setupClose = setupBlock.querySelector('.setup-close');
+var wizardCoat = setupBlock.querySelector('.setup-wizard .wizard-coat');
+var wizardEyes = setupBlock.querySelector('.setup-wizard .wizard-eyes');
+var wizardFireball = setupBlock.querySelector('.setup-fireball-wrap');
 
 var getRandomItem = function (array) {
   return array[Math.floor(Math.random() * array.length)];
@@ -80,4 +83,16 @@ setupClose.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     closePopup();
   }
+});
+
+wizardCoat.addEventListener('click', function () {
+  wizardCoat.style.fill = getRandomItem(colorsCoats);
+});
+
+wizardEyes.addEventListener('click', function () {
+  wizardEyes.style.fill = getRandomItem(colorsCoats);
+});
+
+wizardFireball.addEventListener('click', function () {
+  wizardFireball.style.backgroundColor = getRandomItem(colorsFireballs);
 });

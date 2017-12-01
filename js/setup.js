@@ -13,6 +13,7 @@ var setupClose = setupBlock.querySelector('.setup-close');
 var wizardCoat = setupBlock.querySelector('.setup-wizard .wizard-coat');
 var wizardEyes = setupBlock.querySelector('.setup-wizard .wizard-eyes');
 var wizardFireball = setupBlock.querySelector('.setup-fireball-wrap');
+var setupButtonSubmit = setupBlock.querySelector('.setup-submit');
 
 var getRandomItem = function (array) {
   return array[Math.floor(Math.random() * array.length)];
@@ -83,6 +84,11 @@ setupClose.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     closePopup();
   }
+});
+
+setupButtonSubmit.addEventListener('click', function () {
+  setupButtonSubmit.type = 'submit';
+  closePopup();
 });
 
 wizardCoat.addEventListener('click', function () {

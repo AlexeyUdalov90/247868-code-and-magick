@@ -96,7 +96,7 @@ wizardCoat.addEventListener('click', function () {
 });
 
 wizardEyes.addEventListener('click', function () {
-  wizardEyes.style.fill = getRandomItem(colorsCoats);
+  wizardEyes.style.fill = getRandomItem(colorsEyes);
 });
 
 wizardFireball.addEventListener('click', function () {
